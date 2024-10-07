@@ -1,42 +1,78 @@
+using System.Collections.Generic;
 using System.Drawing;
+using System.Security.Cryptography;
 
 namespace BoardBall.Core;
 
 public class Game {
-    public Point Ball;
-    public List<Point> Footballers;
-    
-    private CurrentPlayer currentPlayer;
-    private GameConfig config;
+    public const string WrongPlayer = "Not this player is on turn";
+    public const string CannotPlaceOnBall = "Footballer cannot be placed on ball";
+    public const string CannotPlaceOnFootballer = "Footballer cannot be placed on already placed footballer";
+    public const string NoMoreFreeFootballers = "There are no more free footballers to place";
+    public const string CannotPlaceOutOfBounds = "Footballer cannot be placed out of bounds";
 
-    public Game(GameConfig config) {
-        this.Ball = new Point((config.Rows / 2) + 1, (config.Columns / 2) + 1);
-        this.Footballers = new List<Point>();
-        this.currentPlayer = CurrentPlayer.Player1;
-        this.config = config;
+    public State state = new State();
+
+    public Game(params Event[] events)
+    {
+        state.ProcessEvents(events);
     }
 
-    public void Player1AddsFootballer(Point footballer)
-    {
-        if (this.Footballers.Count() == config.Footballers) throw new GameException("All the footballers are on the field");
-        if (currentPlayer == CurrentPlayer.Player2) throw new GameException("Player2 should come");
-        if (footballer == this.Ball) throw new GameException("Player1 cannot put footballer on the ball");
-        this.Footballers.Add(footballer);
-        this.currentPlayer = CurrentPlayer.Player2;
+    public IEnumerable<Event> Handle(Commands.StartGame command) {
+        var ballLocation = new Point((command.Config.Rows / 2) + 1, (command.Config.Columns / 2) + 1);
+        return state.ProcessEvents(
+            new Events.GameStarted(command.Config),
+            new Events.BallPlaced(ballLocation), 
+            new Events.CurrentPlayerChanged(Player.One));
     }
 
-    public void Player2AddsFootballer(Point footballer)
-    {
-        if (this.Footballers.Count() == config.Footballers) throw new GameException("All the footballers are on the field");
-        if (currentPlayer == CurrentPlayer.Player1) throw new GameException("Player1 should come");
-        if (footballer == this.Ball) throw new GameException("Player2 cannot place footballer on the ball");
-        if (this.Footballers.Any(f => f == footballer)) throw new GameException("Player2 cannot place on existing footballer");
-        this.Footballers.Add(footballer);
-        this.currentPlayer = CurrentPlayer.Player1;
+    public IEnumerable<Event> Handle(Commands.PlaceFootballer command) {
+        CheckCurrentPlayer(command.player);
+        CheckAvailableFootballer();
+        CheckOutOfBounds(command.location);
+        CheckBallPosition(command.location);
+        CheckAllPlacedFootballers(command.location);
+        return state.ProcessEvents(
+            new Events.FootballerPlaced(command.location),
+            new Events.CurrentPlayerChanged(OtherPlayer(command.player))
+        );
+    }
+
+    private void CheckCurrentPlayer(Player player) {
+        if (state.CurrentPlayer == null || state.CurrentPlayer != player)
+            throw new ArgumentException(WrongPlayer);
+    }
+
+    private void CheckOutOfBounds(Point location) {
+        if (location.X < 1 
+            || location.X > state.Config.Columns 
+            || location.Y < 1 
+            || location.Y > state.Config.Rows)
+            throw new ArgumentException(CannotPlaceOutOfBounds);
+    }
+
+    private void CheckBallPosition(Point location) {
+        if (state.Ball == location)
+            throw new ArgumentException(CannotPlaceOnBall);
+    }
+
+    private void CheckAvailableFootballer() {
+        if (state.Footballers.Count == state.Config!.Footballers)
+            throw new ArgumentException(NoMoreFreeFootballers);
+    }
+
+    private void CheckAllPlacedFootballers(Point location) {
+        if (state.Footballers.Any(f => f == location))
+            throw new ArgumentException(CannotPlaceOnFootballer);
+    }
+
+    private Player OtherPlayer(Player player) {
+        if (state.CurrentPlayer == Player.One) return Player.Two;
+        return Player.One;
     }
 }
 
-public enum CurrentPlayer {
-    Player1,
-    Player2,
+public enum Player {
+    One,
+    Two,
 }
