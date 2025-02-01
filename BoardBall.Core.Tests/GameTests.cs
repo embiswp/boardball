@@ -66,6 +66,12 @@ public class GameTests
             exception.Message.ShouldBe("player2");
         }
     }
+
+    //Test for error case when Columns are even
+    //Test for error case when Rows are even
+    //Test for error case when Columns are 0 or less than 3
+    //Test for error case when Rows are 0 or less than 1
+    //Test for error case when number of footballers is odd
     
 }
 
