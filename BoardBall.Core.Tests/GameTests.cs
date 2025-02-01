@@ -83,6 +83,7 @@ public class GameTests
         Should.Throw<ArgumentException>(() => game.Handle(command)).Message.ShouldBe(Game.CannotPlaceOnBall);
     }
 
+    //TODO: This test is lying
     [Fact]
     public void Player1_Can_Place_Footballer_On_Empty_Space() {
         var game = new Game();
@@ -99,22 +100,30 @@ public class GameTests
 
     [Fact]
     public void Player1_Cannot_Place_Footballer_After_His_Step() {
+        //Given
         var game = new Game();
         game.Handle(new Commands.StartGame(new GameConfig("p1", "p2", 5, 5, 4)));
         game.Handle(new Commands.PlaceFootballer(Player.One, new Point(2, 2)));
+        //When
         var command = new Commands.PlaceFootballer(Player.One, new Point(2, 2));
+        //Then
         Should.Throw<ArgumentException>(() => game.Handle(command)).Message.ShouldBe(Game.WrongPlayer);
     }
 
     [Fact]
     public void Player2_Cannot_Place_Footballer_On_Placed_Footballer() {
+        //Given
         var game = new Game();
         game.Handle(new Commands.StartGame(new GameConfig("p1", "p2", 5, 5, 4)));
         game.Handle(new Commands.PlaceFootballer(Player.One, new Point(2, 2)));
+        //When
         var command = new Commands.PlaceFootballer(Player.Two, new Point(2, 2));
+        //Then
         Should.Throw<ArgumentException>(() => game.Handle(command)).Message.ShouldBe(Game.CannotPlaceOnFootballer);
     }
 
+    //Ball placing tests
+    //TODO: this test is lying!
     [Fact]
     public void Player2_Cannot_Place_Ball_On_Footballer() {
         var game = new Game();
