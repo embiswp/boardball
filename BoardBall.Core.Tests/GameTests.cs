@@ -86,15 +86,27 @@ public class GameTests
             game.Start("Péter", "Balázs", 2, 0, 0);
             Assert.Fail();
         }
-        catch (ArgumentException exception)
-        {
-            Console.WriteLine("SKILL ISSEU?!");
+        catch (ArgumentException exception) {
             Console.WriteLine(exception);
             exception.Message.ShouldBe("rows");
         }
 
     }
     //Test for error case when Columns are even
+    [Fact]
+    public void Test_Columns_are_even()
+    {
+        var game = new Game();
+
+        try {
+            game.Start("Péter", "Balázs", 5, 2, 0);
+            Assert.Fail();
+        }
+        catch (ArgumentException test) {
+            Console.WriteLine("Skill isseu?!: {0}",test);
+            test.Message.ShouldBe("columns");
+        }
+    }
     //Test for error case when Columns are 0 or less than 3
     //Test for error case when Rows are 0 or less than 1
     //Test for error case when number of footballers is odd
@@ -122,13 +134,18 @@ public class Game
         Player1 = player1;
         if (string.IsNullOrEmpty(player2)) throw new ArgumentException(nameof(player2));
         Player2 = player2;
-        if (columns % 2 != 0) {
+        if (rows % 2 != 0) {
             Rows = rows;
         }
-        else{
+        else {
             throw new ArgumentException(nameof(rows));
         }
-        Columns = columns;
+        if (columns %2 != 0) {
+            Columns = columns;
+        }
+        else{
+            throw new ArgumentException(nameof(columns));
+        }
         Footballers = footballers;
         State = GameState.Playing;
     }
