@@ -94,7 +94,7 @@ public class GameTests
     }
     //Test for error case when Columns are even
     [Fact]
-    public void Test_Columns_are_even()
+    public void Test_for_error_when_Columns_are_even()
     {
         var game = new Game();
 
@@ -103,11 +103,29 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException test) {
-            Console.WriteLine("Skill isseu?!: {0}",test);
+            Console.WriteLine(test);
             test.Message.ShouldBe("columns");
         }
     }
+    
     //Test for error case when Columns are 0 or less than 3
+    [Fact]
+    public void Test_for_error_when_Columns_are_0_or_less_then_3()
+    {
+        var game = new Game();
+        int columns = 1;
+        try{
+            game.Start("Péter", "Balázs", 3,columns,0);
+            if ( columns == 0 || columns < 3){
+                //Console.WriteLine("\nSKILL ISSUE?! {0}", columns == 0 || columns < 3);
+                Assert.Fail();
+            }
+        }
+        catch (ArgumentException exception){
+            Console.WriteLine("\n {0}",exception);
+            exception.Message.ShouldBe("columns");
+        }
+    }
     //Test for error case when Rows are 0 or less than 1
     //Test for error case when number of footballers is odd
 
@@ -140,10 +158,17 @@ public class Game
         else {
             throw new ArgumentException(nameof(rows));
         }
-        if (columns %2 != 0) {
+        if (columns %2 != 0 ) {
             Columns = columns;
         }
         else{
+            throw new ArgumentException(nameof(columns));
+        }
+
+        if ( columns != 0 & columns > 3){
+            Columns = columns;
+        }
+        else {
             throw new ArgumentException(nameof(columns));
         }
         Footballers = footballers;
