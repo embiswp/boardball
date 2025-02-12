@@ -137,9 +137,10 @@ public class GameTests
             exception.Message.ShouldBe("rows");
         }
     }
-    //Test for error case when Rows are 0 or less than 1
+    
     //Test for error case when number of footballers is odd
 
+    // next step is the splitting
 }
 
 public enum GameState
