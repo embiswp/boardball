@@ -110,20 +110,31 @@ public class GameTests
     
     //Test for error case when Columns are 0 or less than 3
     [Fact]
-    public void Test_for_error_when_Columns_are_0_or_less_then_3()
+    public void Test_for_error_when_Columns_less_then_3()
     {
         var game = new Game();
         int columns = 1;
         try{
             game.Start("Péter", "Balázs", 3,columns,0);
-            if ( columns == 0 || columns < 3){
-                //Console.WriteLine("\nSKILL ISSUE?! {0}", columns == 0 || columns < 3);
-                Assert.Fail();
-            }
+            Assert.Fail();
         }
         catch (ArgumentException exception){
             Console.WriteLine("\n {0}",exception);
             exception.Message.ShouldBe("columns");
+        }
+    }
+
+    [Fact]
+    public void Test_for_error_when_Rows_less_then_1(){
+        var game = new Game();
+        int rows = 0;
+        try{
+            game.Start("Péter", "Balázs", rows, 5, 0);
+            Assert.Fail();
+        }
+        catch (ArgumentException exception) {
+            Console.WriteLine("\n {0}", exception);
+            exception.Message.ShouldBe("rows");
         }
     }
     //Test for error case when Rows are 0 or less than 1
@@ -148,29 +159,30 @@ public class Game
 
     public void Start(string player1, string player2, int rows, int columns, int footballers)
     {
+        //player1
         if (string.IsNullOrEmpty(player1)) throw new ArgumentException(nameof(player1));
         Player1 = player1;
+
+        //player2
         if (string.IsNullOrEmpty(player2)) throw new ArgumentException(nameof(player2));
         Player2 = player2;
-        if (rows % 2 != 0) {
+
+        //Rows
+        if (rows % 2 != 0 & rows >= 1) {
             Rows = rows;
         }
         else {
             throw new ArgumentException(nameof(rows));
+
+            //columns
         }
-        if (columns %2 != 0 ) {
+        if (columns %2 != 0 & columns != 0 & columns > 3 ) {
             Columns = columns;
         }
         else{
             throw new ArgumentException(nameof(columns));
         }
 
-        if ( columns != 0 & columns > 3){
-            Columns = columns;
-        }
-        else {
-            throw new ArgumentException(nameof(columns));
-        }
         Footballers = footballers;
         State = GameState.Playing;
     }
