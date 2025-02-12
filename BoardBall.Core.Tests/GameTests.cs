@@ -139,6 +139,19 @@ public class GameTests
     }
     
     //Test for error case when number of footballers is odd
+    [Fact]
+    public void Test_for_error_when_num_of_footballers_is_odd(){
+        var game = new Game();
+        int footballers = 3;
+        try {
+            game.Start("Péter","Balázs", 3,5,footballers);
+            Assert.Fail();
+        }
+        catch (ArgumentException exception) {
+            Console.WriteLine("\n{0}", exception);
+            exception.Message.ShouldBe("footballers");
+        }
+    }
 
     // next step is the splitting
 }
@@ -174,9 +187,8 @@ public class Game
         }
         else {
             throw new ArgumentException(nameof(rows));
-
-            //columns
         }
+        //Columns
         if (columns %2 != 0 & columns != 0 & columns > 3 ) {
             Columns = columns;
         }
@@ -184,7 +196,13 @@ public class Game
             throw new ArgumentException(nameof(columns));
         }
 
-        Footballers = footballers;
+        //footballers
+        if (footballers % 2 == 0){
+            Footballers = footballers;
+        }
+        else{
+            throw new ArgumentException(nameof(footballers));
+        }
         State = GameState.Playing;
     }
 }
