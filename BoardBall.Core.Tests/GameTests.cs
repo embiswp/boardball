@@ -26,6 +26,7 @@ public class GameTests
         game.Rows.ShouldBe(7);
         game.Columns.ShouldBe(9);
         game.Footballers.ShouldBe(10);
+        game.BallLocation.ShouldBe(new Point(4,5));
     }
 
     [Fact]
@@ -52,7 +53,7 @@ public class GameTests
         }
         catch (ArgumentException exception)
         {
-            System.Console.WriteLine(exception);
+            //System.Console.WriteLine(exception);
             //Then
             exception.Message.ShouldBe("player1");
         }
@@ -71,7 +72,7 @@ public class GameTests
         }
         catch (ArgumentException exception)
         {
-            System.Console.WriteLine(exception);
+            //System.Console.WriteLine(exception);
             //Then
             exception.Message.ShouldBe("player2");
         }
@@ -88,7 +89,7 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException exception) {
-            Console.WriteLine(exception);
+            //Console.WriteLine(exception);
             exception.Message.ShouldBe("rows");
         }
 
@@ -104,7 +105,7 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException test) {
-            Console.WriteLine(test);
+            //Console.WriteLine(test);
             test.Message.ShouldBe("columns");
         }
     }
@@ -120,7 +121,7 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException exception){
-            Console.WriteLine("\n {0}",exception);
+            //Console.WriteLine("\n {0}",exception);
             exception.Message.ShouldBe("columns");
         }
     }
@@ -134,7 +135,7 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException exception) {
-            Console.WriteLine("\n {0}", exception);
+            //Console.WriteLine("\n {0}", exception);
             exception.Message.ShouldBe("rows");
         }
     }
@@ -149,12 +150,10 @@ public class GameTests
             Assert.Fail();
         }
         catch (ArgumentException exception) {
-            Console.WriteLine("\n{0}", exception);
+            //Console.WriteLine("\n{0}", exception);
             exception.Message.ShouldBe("footballers");
         }
     }
-
-    // next step is the splitting
 }
 
 

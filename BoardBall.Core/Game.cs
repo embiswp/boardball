@@ -1,3 +1,5 @@
+using System.Drawing;
+    
 namespace BoardBall.Core
 {
     public class Game
@@ -8,6 +10,8 @@ namespace BoardBall.Core
         public int Columns { get; private set; }
         public int Footballers { get; private set; }
         public GameState State { get; internal set; }
+        public Point BallLocation { get; internal set; }
+
 
         public void Start(string player1, string player2, int rows, int columns, int footballers)
         {
@@ -27,7 +31,7 @@ namespace BoardBall.Core
                 throw new ArgumentException(nameof(rows));
             }
             //Columns
-            if (columns %2 != 0 & columns != 0 & columns > 3 ) {
+            if (columns %2 != 0 & columns != 0 & columns >= 3 ) {
                 Columns = columns;
             }
             else{
@@ -41,7 +45,22 @@ namespace BoardBall.Core
             else{
                 throw new ArgumentException(nameof(footballers));
             }
+            BallLocation = new Point(rows / 2 +1, columns / 2+1);
             State = GameState.Playing;
         }
+
+        public void PlaceFootballer(string player, int row, int column)
+        {
+            if(State != GameState.Playing){
+                throw new ArgumentException("start");
+            }
+
+            if (BallLocation.X == row && BallLocation.Y == column){
+                throw new ArgumentException("ball");
+            }
+
+        }
+
     }
+
 }
