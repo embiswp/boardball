@@ -1,0 +1,7 @@
+- [x] repo létrehozása
+- [x] solution létrehozása: dotnet new sln --name Szenzorhalozat
+- [x] console projekt létrehozása: dotnet new console --name Szenzorhalozat.Console
+- [x] console projekt hozzáadása a solutionhöz: dotnet sln add ./Szenzorhalozat.Console/Szenzorhalozat.Console.csproj
+- [x] DLL Projekt létrehozása (blö?): dotnet new classlib --name Szenzorhalozat.Core
+- [x] DLL Projekt hozzáadása a solutionhöz: dotnet sln add ./Szenzorhalozat.Core/Szenzorhalozat.Core.csproj
+- [x] DLL Projekt referencia hozzáadása a Console projekthez: dotnet add reference ../Szenzorhalozat.Core/Szenzorhalozat.Core.csproj
