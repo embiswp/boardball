@@ -2,11 +2,13 @@ public class Szenzorhalozat
 {
     public delegate void MeresTriggerDelegate();
     public List<Szenzor> Szenzorok { get; set; }
+    public AdatgyujtoAllomas AdatgyujtoAllomas { get; set; }
     public event MeresTriggerDelegate MeresTrigger;
     
     public Szenzorhalozat()
     {
         Szenzorok = new List<Szenzor>();
+        AdatgyujtoAllomas = new AdatgyujtoAllomas();
     }
     
     public void MeresInditas()
@@ -22,13 +24,7 @@ public class Szenzorhalozat
     public void SzenzorHozzaadas(Szenzor szenzor)
     {
         Szenzorok.Add(szenzor);
-        szenzor.MeresiAdatKeszult += MeresiAdatFogadas;
+        szenzor.MeresiAdatKeszult += AdatgyujtoAllomas.MeresiAdatFogadas;
         MeresTrigger += szenzor.Meres;
     }
-
-    public void MeresiAdatFogadas(MeresiAdat adat)
-    {
-        System.Console.WriteLine($"Szenzor ID: {adat.SzenzorId}, Meres ideje: {adat.MeresIdeje}, Homerseklet: {adat.Homerseklet}");
-    }
-
 }
