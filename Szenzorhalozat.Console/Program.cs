@@ -3,3 +3,5 @@ var halozat = new Szenzorhalozat();
 halozat.SzenzorHozzaadas(new Szenzor { Id = 1 });
 halozat.SzenzorHozzaadas(new Szenzor { Id = 2 });
 halozat.MeresInditas();
+
+halozat.AdatgyujtoAllomas.ElsoKiertekeles();
