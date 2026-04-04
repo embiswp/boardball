@@ -1,0 +1,6 @@
+@BoardBall.Api_HostAddress = http://localhost:5237
+
+GET {{BoardBall.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BoardBall.Api/BoardBall.Api.csproj" />
+  <Project Path="BoardBall.Core.Tests/BoardBall.Core.Tests.csproj" />
+  <Project Path="BoardBall.Core/BoardBall.Core.csproj" />
+</Solution>
